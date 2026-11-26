@@ -6,7 +6,33 @@
 <title>The Wedding of Nadia & Tata</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
+
+/* ANIMASI FADE IN SAAT SCROLL */
+.fade-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+.fade-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Mengurangi animasi jika pengunjung memilih reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+  
 :root{--cream:#f7f8f1;--blush:#e7ecdf;--rose:#87977d;--rose2:#c5cfb8;--gold:#b49a6a;--ink:#53624f;--muted:#788572;--green:#84977d;--paper:#fffef9}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Montserrat,sans-serif;font-weight:400;overflow-x:hidden}button,a{font:inherit}button{cursor:pointer}
 .cover{min-height:100svh;display:grid;place-items:center;padding:28px 20px;position:fixed;inset:0;z-index:20;overflow-y:auto;background:radial-gradient(ellipse at center,#fffef9 0%,#eef2e7 65%,#e4eadc 100%)}
@@ -459,5 +485,45 @@ function openInvite(){document.getElementById('cover').style.display='none';docu
 const target=new Date('2027-01-02T00:00:00+07:00').getTime();function tick(){let d=Math.max(0,target-Date.now());document.getElementById('days').textContent=Math.floor(d/86400000);document.getElementById('hours').textContent=Math.floor(d%86400000/3600000);document.getElementById('minutes').textContent=Math.floor(d%3600000/60000);document.getElementById('seconds').textContent=Math.floor(d%60000/1000)}tick();setInterval(tick,1000);
 async function shareInvite(){const data={title:'Undangan Pernikahan Nadia & Tata',text:'Dengan penuh kebahagiaan, kami mengundang Anda ke pernikahan Nadia & Tata, 2 Januari 2027 di Palembang.',url:location.href};try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(location.href);alert('Link undangan berhasil disalin.')}}catch(e){}}
 function rsvp(){const msg=encodeURIComponent('Assalamu’alaikum, saya ingin mengonfirmasi kehadiran pada pernikahan Nadia & Tata tanggal 2 Januari 2027.');window.open('https://wa.me/6285883303902?text='+msg,'_blank')}
+
+/* FADE IN OTOMATIS SAAT DI-SCROLL */
+document.addEventListener("DOMContentLoaded", function () {
+
+  const elements = document.querySelectorAll(
+    ".section .eyebrow, " +
+    ".section h2, " +
+    ".section .copy, " +
+    ".section .date, " +
+    ".section .countdown, " +
+    ".section .divider, " +
+    ".section .panel, " +
+    ".section .gift-card, " +
+    ".section .names, " +
+    ".section .actions, " +
+    ".section .note, " +
+    "footer"
+  );
+
+  elements.forEach(function (element) {
+    element.classList.add("fade-on-scroll");
+  });
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15
+  });
+
+  elements.forEach(function (element) {
+    observer.observe(element);
+  });
+
+});
+
 </script>
 </body></html>
